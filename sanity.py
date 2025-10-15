@@ -33,14 +33,14 @@ from zoedepth.utils.config import get_config
 from pprint import pprint
 
 
-torch.hub.help("intel-isl/MiDaS", "DPT_BEiT_L_384", force_reload=True) 
+torch.hub.help("intel-isl/MiDaS", "DPT_BEiT_L_384", force_reload=False)
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 if DEVICE == "cpu":
     print("WARNING: Running on CPU. This will be slow. Check your CUDA installation.")
 
-print("*" * 20 + " Testing zoedepth " + "*" * 20)
-conf = get_config("zoedepth", "infer")
+print("*" * 20 + " Testing zoedepth_nyu " + "*" * 20)
+conf = get_config("zoedepth_nyu", "infer")
 
 
 print("Config:")
@@ -67,7 +67,7 @@ print("\n\n")
 print("-"*20 + " Testing on an indoor scene from url " + "-"*20)
 
 # Test img
-url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4W8H_Nxk_rs3Vje_zj6mglPOH7bnPhQitBH8WkqjlqQVotdtDEG37BsnGofME3_u6lDk&usqp=CAU"
+url = "https://www.topgear.com/sites/default/files/2022/07/6_0.jpg"
 img = get_image_from_url(url)
 orig_size = img.size
 X = ToTensor()(img)
@@ -86,7 +86,7 @@ with torch.no_grad():
 print("output.shape", out.shape)
 pred = Image.fromarray(colorize(out))
 # Stack img and pred side by side for comparison and save
-pred = pred.resize(orig_size, Image.ANTIALIAS)
+pred = pred.resize(orig_size, Image.Resampling.LANCZOS)
 stacked = Image.new("RGB", (orig_size[0]*2, orig_size[1]))
 stacked.paste(img, (0, 0))
 stacked.paste(pred, (orig_size[0], 0))

@@ -372,7 +372,7 @@ def get_config(model_name, mode='train', dataset=None, **overwrite_kwargs):
     """
 
 
-    check_choices("Model", model_name, ["zoedepth", "zoedepth_nk"])
+    check_choices("Model", model_name, ["zoedepth", "zoedepth_nk", "zoedepth_nyu"])
     check_choices("Mode", mode, ["train", "infer", "eval"])
     if mode == "train":
         check_choices("Dataset", dataset, ["nyu", "kitti", "mix", None])
